@@ -5,3 +5,10 @@ services:
     ports:
       - "8000:8000" 
     tty: true
+  app:
+    build: ./src
+    ports:
+      - "3000:3000"
+    tty: true
+    volumes:
+      - ./src:/app
