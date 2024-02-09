@@ -3,22 +3,19 @@ from django.utils import timezone
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
 # Create your models here.
-
-# チャットルーム
 class ChatRoom(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def is_active(self):
-        return timezone.now() - self.created_at < timezone.timedelta(hours=1)
+        # チャットルームが作成されてから1時間以内ならTrue、それ以外はFalseを返す
+        return timezone.now() < self.created_at + timezone.timedelta(hours=1)
 
-#メッセージ
 class Message(models.Model):
     room = models.ForeignKey(ChatRoom, related_name='messages', on_delete=models.CASCADE)
     username = models.CharField(max_length=100)
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
-# ユーザー作成ロジック
 class CustomUserManager(BaseUserManager):
     def create_user(self, username, password=None, **extra_fields):
         """
@@ -45,7 +42,6 @@ class CustomUserManager(BaseUserManager):
 
         return self.create_user(username, password, **extra_fields)
 
-# カスタムユーザー
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=100, unique=True)
     is_active = models.BooleanField(default=True)
