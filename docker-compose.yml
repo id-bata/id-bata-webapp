@@ -5,6 +5,8 @@ services:
     ports:
       - "8000:8000" 
     tty: true
+    volumes:
+      - ./server:/app
   app:
     build: ./src
     ports:
