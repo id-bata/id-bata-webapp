@@ -1,0 +1,18 @@
+.main{
+  padding-left:8%;
+  padding-top: 4%;
+}
+.title-text{
+  font-family:'inter';
+  letter-spacing :20px;
+  font-size:100px;
+}
+.subtitle{
+  padding-top: 18%;
+}
+.subtitle-text{
+  font-family: 'katibeh';
+  font-size: 30px;
+  padding-bottom: 6%;
+  letter-spacing:12px
+}
