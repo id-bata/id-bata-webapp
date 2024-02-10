@@ -4,53 +4,17 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 
 # Create your models here.
 class ChatRoom(models.Model):
+    title = models.CharField(max_length=20)
     created_at = models.DateTimeField(auto_now_add=True)
-
-    def is_active(self):
-        # チャットルームが作成されてから1時間以内ならTrue、それ以外はFalseを返す
-        return timezone.now() < self.created_at + timezone.timedelta(hours=1)
-
-class Message(models.Model):
-    room = models.ForeignKey(ChatRoom, related_name='messages', on_delete=models.CASCADE)
-    username = models.CharField(max_length=100)
-    text = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-
-class CustomUserManager(BaseUserManager):
-    def create_user(self, username, password=None, **extra_fields):
-        """
-        指定されたユーザーネームでユーザーを作成し、保存します。
-        """
-        if not username:
-            raise ValueError('The Username must be set')
-        user = self.model(username=username, **extra_fields)
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
-
-    def create_superuser(self, username, password=None, **extra_fields):
-        """
-        スーパーユーザーを作成し、保存します。
-        """
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError('Superuser must have is_staff=True.')
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError('Superuser must have is_superuser=True.')
-
-        return self.create_user(username, password, **extra_fields)
-
-class CustomUser(AbstractBaseUser, PermissionsMixin):
-    username = models.CharField(max_length=100, unique=True)
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
-
-    objects = CustomUserManager()
-
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = []  # username以外に必須のフィールドはなし
 
     def __str__(self):
-        return self.username
+        return self.title
+    
+class Message(models.Model):
+    chat_room = models.ForeignKey('ChatRoom', on_delete=models.CASCADE, related_name='messages')
+    user = models.CharField(max_length=20)
+    content = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.user} - {self.content}'
