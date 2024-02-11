@@ -1,9 +1,13 @@
+import { UIProvider,VStack,Text,Flex,Button,Spacer,Center,Divider} from "@yamada-ui/react"
 import Link from 'next/link'
 
 function Sample(){
     return (
         <div>
-        <span>sampleやで〜</span>
+        <Center>
+            <Text className="chatroom-title-text">
+                最近あった怖い話
+            </Text>
         <Link href="/">
             <p>
             ホームページへ
@@ -17,7 +21,7 @@ function Sample(){
                 ssgへ
             </p>
         </Link>
-
+        </Center>
         </div>
     )
 }
