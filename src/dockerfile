@@ -1,4 +1,4 @@
 FROM node:lts-buster-slim
 WORKDIR /app
 
-CMD npm install  && npm run dev 
+CMD npm install && npm install @yamada-ui/react  && npm run dev 
